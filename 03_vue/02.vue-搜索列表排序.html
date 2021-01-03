@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<body>
+    <div id="app">
+        <input type="text" v-model='shousuo'>
+        <ul>
+            <li v-for='(p ,index) in newPersons ' :key='p.id'>
+                {{ p.id }}---{{p.name}}---{{p.age}}
+            </li>
+        </ul>
+        <button @click='shousuoType=2'>年龄升序</button>
+        <button @click='shousuoType=3'>年龄降序</button>
+        <button @click='shousuoType=1'>原本顺序</button>
+    </div>
+
+    <script type="text/javascript">
+        // 全局配置 取消开发提示
+        Vue.config.productionTip = false;
+        new Vue({
+            el: '#app',
+            data: {
+                shousuo: '',
+                shousuoType: 1,//排序类型 1不排序 2升序 3降序
+                persons: [
+                    { id: 1, name: 'abbc', age: 11 },
+                    { id: 2, name: 'bbccaa', age: 12 },
+                    { id: 3, name: 'ddccaa', age: 13 },
+                    { id: 4, name: 'ccddff', age: 14 },
+                    { id: 5, name: 'abcdf', age: 17 }
+                ],
+            },
+            methods: {
+
+            },
+            computed: {
+                //过滤后的新数组
+                newPersons() {
+                    //取出依赖数据
+                    const { shousuo, persons, shousuoType } = this
+                    //计算产生新数据
+                    let arr = persons.filter((item, index) => {
+                        return item.name.indexOf(shousuo) !== -1
+                    }
+                       
+                        
+                    )
+                    //排序
+                    if (shousuoType !== 1) {
+                        arr.sort((a, b) => {
+                            if (shousuoType ===2) {
+                                //小于 0 ，那么 a 会被排列到 b 之前；
+                                return a.age - b.age
+                            } else {
+                                //大于 0 ， b 会被排列到 a 之前。
+                                return b.age - a.age
+                            }
+                        })
+                    }
+                    //返回出去
+                    return arr
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
